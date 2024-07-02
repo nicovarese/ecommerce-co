@@ -11,3 +11,17 @@ Hecommerce/src/main/java/com/coder/ecommerce/services/ClientsService.java,d\0\d
 Necommerce/src/main/java/com/coder/ecommerce/controllers/ClientsController.java,a\c\ac83ea3039d61106e14ff6a7fe7777e4d79fcf3b
 A
 ecommerce/pom.xml,d\e\dee77421cd1fa4f1427282b32bc0e56c78c5dc8d
+q
+Aecommerce/src/main/java/com/coder/ecommerce/entities/Invoice.java,8\6\86a04a36602353da562cbaa3cd0f18ab68c90825
+x
+Hecommerce/src/main/java/com/coder/ecommerce/entities/InvoiceDetails.java,d\c\dccc14a446e3c16273afcfbd622ed8eca17a8125
+q
+Aecommerce/src/main/java/com/coder/ecommerce/entities/Product.java,a\7\a7d83e0276a5b92d5ab0f045e565fbaa83acf214
+
+Oecommerce/src/main/java/com/coder/ecommerce/repositories/ProductRepository.java,e\c\ecea000d8aaf5bb4f25a4a550ddd307e2bf6b747
+
+Oecommerce/src/main/java/com/coder/ecommerce/repositories/InvoiceRepository.java,8\0\80599dcb485a35c698d927a19bb9e04ccf349fed
+†
+Vecommerce/src/main/java/com/coder/ecommerce/repositories/InvoiceDetailsRepository.java,0\5\05c94ce34458d403b5b36c37e7996fc15f2aabdc
+x
+Hecommerce/src/main/java/com/coder/ecommerce/services/ProductService.java,1\7\176dc59bf843cecd21571e12008257a9ea250493
