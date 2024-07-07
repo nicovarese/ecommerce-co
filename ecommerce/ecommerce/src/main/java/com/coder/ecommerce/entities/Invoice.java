@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "invoice")
@@ -25,5 +26,10 @@ public class Invoice {
 
     @Getter @Setter
     private double total;
+
+    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @Getter @Setter
+    private List<InvoiceDetails> invoiceDetails;
+
 
 }

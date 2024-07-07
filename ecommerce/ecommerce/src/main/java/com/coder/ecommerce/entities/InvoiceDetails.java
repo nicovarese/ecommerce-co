@@ -1,8 +1,8 @@
 package com.coder.ecommerce.entities;
 
-
 import jakarta.persistence.*;
 import lombok.*;
+import java.util.List;
 
 @Entity
 @Table(name = "invoice_details")
@@ -29,5 +29,7 @@ public class InvoiceDetails {
 
     @Getter @Setter
     private double price;
+
+
 
 }

@@ -11,6 +11,8 @@ import java.util.Optional;
 @Service
 public class ProductService {
 
+    //Inyección de repositorio a través de una instancia de
+    //ProductService para mantener Inmutabilidad
     private final ProductRepository repository;
 
     @Autowired
@@ -18,7 +20,8 @@ public class ProductService {
         this.repository= repository;
     }
 
-    public Product createProduct(Product product){
+    //Métodos para la lógica de Productos.
+    public Product saveProduct(Product product){
         return repository.save(product);
     }
 

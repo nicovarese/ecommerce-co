@@ -27,7 +27,7 @@ public class ClientsController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createClient(@Valid @RequestBody Client client, BindingResult result) {
+    public ResponseEntity<?> createClient(@Valid @RequestBody Client data, BindingResult result) {
         try {
             // En el caso de que no venga desde el body los valores correspondiente,
             // la respuesta va a ser una BadRequest y avisará que campos son obligatorios.
@@ -37,6 +37,7 @@ public class ClientsController {
                 return ResponseEntity.badRequest().body(errors);
             }
             // Lógica para guardar el cliente
+            Client client = service.saveClient(data);
             return ResponseEntity.status(HttpStatus.CREATED).body(client);
         } catch (Exception e) {
             // Log para debuggear el error.
@@ -84,7 +85,7 @@ public class ClientsController {
     public ResponseEntity<String> deleteClientById(@PathVariable Long id) {
         try {
             service.deleteClientById(id);
-            return ResponseEntity.ok("Cliente borrado exitosamente");
+            return ResponseEntity.ok("Client successfully deleted");
         } catch (Exception e) {
             /// Log para debuggear el error.
             System.out.println(e);
