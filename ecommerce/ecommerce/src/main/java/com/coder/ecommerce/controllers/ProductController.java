@@ -96,4 +96,30 @@ public class ProductController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, @Valid @RequestBody Product data, BindingResult result) {
+        if (result.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            result.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+            return ResponseEntity.badRequest().body(errors);
+        }
+
+        try {
+            // Verifica si el producto existe
+            Optional<Product> existingProduct = service.getProductById(id);
+            if (!existingProduct.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
+            }
+
+            // Actualiza el producto
+            Product product = service.updateProduct(id, data);
+            return ResponseEntity.ok(product);
+        } catch (Exception e) {
+            // Log para debuggear el error.
+            System.out.println("Error updating a product: " + e);
+            // Retorno un mensaje genérico.
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while updating the product. Please try again later.");
+        }
+    }
+
 }

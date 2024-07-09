@@ -1,8 +1,9 @@
 package com.coder.ecommerce.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import java.util.List;
 
 @Entity
 @Table(name = "invoice_details")
@@ -15,21 +16,23 @@ public class InvoiceDetails {
     private Long id;
 
     @ManyToOne
-    @JoinColumn (name = "invoice_id")
+    @JoinColumn(name = "invoice_id")
+    @NotNull(message = "Invoice is mandatory")
     @Getter @Setter
+    @JsonBackReference
     private Invoice invoice;
 
     @Getter @Setter
-    private int amount;
+    @NotNull(message = "Amount is mandatory")
+    private Integer amount;
 
     @ManyToOne
-    @JoinColumn (name = "product_id")
+    @JoinColumn(name = "product_id")
+    @NotNull(message = "Product is mandatory")
     @Getter @Setter
     private Product product;
 
     @Getter @Setter
-    private double price;
-
-
-
+    @NotNull(message = "Price is mandatory")
+    private Double price;
 }

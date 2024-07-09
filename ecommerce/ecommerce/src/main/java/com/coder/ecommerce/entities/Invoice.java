@@ -1,6 +1,8 @@
 package com.coder.ecommerce.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -8,28 +10,52 @@ import java.util.List;
 
 @Entity
 @Table(name = "invoice")
-@NoArgsConstructor @ToString @EqualsAndHashCode
+@NoArgsConstructor
+@ToString
+@EqualsAndHashCode
+@Getter
+@Setter
 public class Invoice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter @Getter
     private Long id;
 
     @ManyToOne
-    @JoinColumn (name = "client_id")
-    @Getter @Setter
+    @JoinColumn(name = "client_id")
+    @NotNull(message = "Client is mandatory")
     private Client client;
 
-    @Getter @Setter @Column(name = "created_at")
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Getter @Setter
+    //No es null por que se va a actualizar solo con el Invoice Details.
     private double total;
 
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @Getter @Setter
+    @JsonManagedReference
     private List<InvoiceDetails> invoiceDetails;
 
+    @PrePersist
+    public void prePersist() {
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
+        calculateTotal();
+    }
 
+    @PreUpdate
+    public void preUpdate() {
+        calculateTotal();
+    }
+
+    private void calculateTotal() {
+        if (invoiceDetails != null && !invoiceDetails.isEmpty()) {
+            this.total = invoiceDetails.stream()
+                    .mapToDouble(InvoiceDetails::getPrice)
+                    .sum();
+        } else {
+            this.total = 0;
+        }
+    }
 }

@@ -37,4 +37,18 @@ public class ProductService {
         repository.deleteById(id);
     }
 
+    public Product updateProduct(Long id, Product data) {
+        Optional<Product> optionalProduct = repository.findById(id);
+        if (optionalProduct.isPresent()) {
+            Product existingProduct = optionalProduct.get();
+            existingProduct.setDescription(data.getDescription());
+            existingProduct.setPrice(data.getPrice());
+            existingProduct.setStock(data.getStock());
+            // Actualiza cualquier otro campo necesario
+            return repository.save(existingProduct);
+        } else {
+            throw new RuntimeException("Product not found");
+        }
+    }
+
 }

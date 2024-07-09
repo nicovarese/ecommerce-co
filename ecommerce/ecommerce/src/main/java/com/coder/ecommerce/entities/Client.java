@@ -26,9 +26,4 @@ public class Client {
     @Getter @Setter @NotNull(message = "DNI is mandatory")
     private Integer dni;
 
-
-    public Client(String name, String surname){
-        this.name = name;
-        this.surname = surname;
-    }
 }

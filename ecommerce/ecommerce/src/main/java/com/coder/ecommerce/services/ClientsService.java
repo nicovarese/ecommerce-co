@@ -1,7 +1,7 @@
 package com.coder.ecommerce.services;
 
 import com.coder.ecommerce.entities.Client;
-import com.coder.ecommerce.repositories.ClientsRepository;
+import com.coder.ecommerce.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +12,11 @@ import java.util.Optional;
 public class ClientsService {
 
     // Declaración del campo que será inyectado y es final para inmutabilidad
-    private final ClientsRepository repository;
+    private final ClientRepository repository;
 
     // Constructor donde se inyecta la dependencia
     @Autowired
-    public ClientsService (ClientsRepository repository){
+    public ClientsService (ClientRepository repository){
         this.repository = repository;
     }
 

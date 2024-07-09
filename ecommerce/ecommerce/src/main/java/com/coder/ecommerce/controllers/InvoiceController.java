@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping (name = "api/v1/invoices")
+@RequestMapping ("api/v1/invoices")
 public class InvoiceController {
 
     private final InvoiceService service;
@@ -27,27 +27,18 @@ public class InvoiceController {
     }
 
     @PostMapping
-    public ResponseEntity<?> saveInvoice(@Valid @RequestBody Invoice data, BindingResult result){
+    public ResponseEntity<?> createInvoice(@RequestParam Long clientId) {
         try {
-        // En el caso de que no venga desde el body los valores correspondiente,
-        // la respuesta va a ser una BadRequest y avisará que campos son obligatorios.
-        if (result.hasErrors()) {
-            Map<String, String> errors = new HashMap<>();
-            result.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
-            return ResponseEntity.badRequest().body(errors);
-        }
-        // Lógica para guardar el detalle de comprobante
-        Invoice invoice = service.saveInvoice(data);
-        return ResponseEntity.status(HttpStatus.CREATED).body(invoice);
-        } catch (Exception e) {
-        // Log para debuggear el error.
-        System.out.println("Error creating an Invoice: " + e);
-        // Retorno un mensaje genérico.
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while creating a Invoice. Please try again later.");
+            Invoice savedInvoice = service.saveInvoice(clientId);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedInvoice);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while creating the invoice. Please try again later.");
         }
     }
 
-    //Agrego una ruta para que quede más clara la api que estoy obteniendo todos los clientes.
+    //Agrego una ruta para que quede más clara la api que estoy obteniendo todos los invoices.
     @GetMapping("/all")
     public ResponseEntity<?> getAllInvoices() {
         try {

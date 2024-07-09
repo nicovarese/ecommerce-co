@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 //Le paso la entidad que necesitamos para el repositorio, y el tipo de dato del ID
-public interface ClientsRepository extends JpaRepository<Client, Long> {
+public interface ClientRepository extends JpaRepository<Client, Long> {
 }

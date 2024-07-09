@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/v1/clients")
+@RequestMapping("api/v1/auth")
 public class ClientsController {
 
     // Declaración del campo que será inyectado y es final para inmutabilidad
@@ -26,7 +26,7 @@ public class ClientsController {
         this.service = service;
     }
 
-    @PostMapping
+    @PostMapping ("/register")
     public ResponseEntity<?> createClient(@Valid @RequestBody Client data, BindingResult result) {
         try {
             // En el caso de que no venga desde el body los valores correspondiente,
@@ -44,6 +44,36 @@ public class ClientsController {
             System.out.println("Error creating a client: " + e);
             // Retorno un mensaje genérico.
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while creating a client. Please try again later.");
+        }
+    }
+
+    @PutMapping("/me")
+    public ResponseEntity<?> updateClient(@Valid @RequestBody Client data, BindingResult result) {
+        try {
+            // Validación de errores en los datos recibidos
+            if (result.hasErrors()) {
+                Map<String, String> errors = new HashMap<>();
+                result.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+                return ResponseEntity.badRequest().body(errors);
+            }
+
+            // Verificar si el cliente existe
+            if (data.getId() == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Client ID is missing");
+            }
+            Optional<Client> existingClient = service.getClientById(data.getId());
+            if (existingClient.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client not found");
+            }
+
+            // Lógica para actualizar el cliente
+            Client updatedClient = service.saveClient(data);
+            return ResponseEntity.status(HttpStatus.OK).body(updatedClient);
+        } catch (Exception e) {
+            // Log para depurar el error
+            System.out.println("Error updating client: " + e);
+            // Retorno un mensaje genérico
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while updating the client. Please try again later.");
         }
     }
 
